@@ -25,6 +25,7 @@ During the course, you'll gain access to the following by signing up for free:
 1. [DataStax Astra DB](https://astra.datastax.com) (you can sign up through your Github account)
 2. [OpenAI account](https://platform.openai.com/signup) (you can sign up through your Github account)
 3. [Streamlit](https://streamlit.io) to deploy your amazing app (you can sign up through your Github account)
+4. [Jina.ai](https://jina.ai/embeddings/) to get an api key for Jina.ai services access
 
 Follow the below steps and provide the **Astra DB API Endpoint**, **Astra DB ApplicationToken** and **OpenAI API Key** when required.
 
@@ -45,6 +46,11 @@ Make sure you have a vector-capable Astra database (get one for free at [astra.d
 Follow the steps outlined [here](https://docs.streamlit.io/streamlit-community-cloud/get-started/quickstart).
 
 ![codespace](./assets/streamlit.png)
+
+### Get an Jina.ai api key for free
+Just navigate to this page [here](https://jina.ai/embeddings/) scroll down and copy your api key .
+
+![codespace](./assets/jina.png)
 
 ## 2️⃣ First try the concepts in a Colab Notebook
 To kick this workshop off, we'll first try the concepts in a [Colab Notebook](https://colab.research.google.com/drive/1_n-QZyuP898JNaX7RDnCmw9lkibgEuP-).
