@@ -94,7 +94,7 @@ def load_vector_store():
     # Connect to the Vector Store
     vector_store = AstraDBVectorStore(
         embedding=JinaEmbeddings(),
-        collection_name="devils_dictionary",
+        collection_name="my_store",
         api_endpoint=st.secrets['ASTRA_API_ENDPOINT'],
         token=st.secrets['ASTRA_TOKEN']
     )
