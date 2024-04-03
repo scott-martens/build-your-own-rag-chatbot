@@ -3,7 +3,7 @@ import os
 import tempfile
 
 from langchain_community.embeddings import JinaEmbeddings
-from langchain_community.llms import HuggingFaceHub
+from langchain_openai import ChatOpenAI
 from langchain_community.chat_models.huggingface import ChatHuggingFace
 from langchain_astradb import AstraDBVectorStore
 from langchain.schema.runnable import RunnableMap
@@ -69,19 +69,11 @@ prompt = load_prompt()
 # Cache OpenAI Chat Model for future runs
 @st.cache_resource()
 def load_chat_model():
-    os.environ["HUGGINGFACEHUB_API_TOKEN"] = st.secrets["HUGGINGFACEHUB_API_TOKEN"]
-    llm = HuggingFaceHub(
-        repo_id="mistralai/Mistral-7B-Instruct-v0.2",
-        task="text-generation",
-        model_kwargs={
-            "max_new_tokens": 512,
-            "top_k": 30,
-            "temperature": 0.1,
-            "repetition_penalty": 1.03,
-        },
-    )
-    return ChatHuggingFace(
-        llm=llm,
+    return ChatOpenAI(
+        temperature=0.3,
+        model='gpt-3.5-turbo',
+        streaming=True,
+        verbose=True
     )
 
 chat_model = load_chat_model()
