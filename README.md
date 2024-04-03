@@ -25,9 +25,9 @@ During the course, you'll gain access to the following by signing up for free:
 1. [DataStax Astra DB](https://astra.datastax.com) (you can sign up through your Github account)
 2. [OpenAI account](https://platform.openai.com/signup) (you can sign up through your Github account)
 3. [Streamlit](https://streamlit.io) to deploy your amazing app (you can sign up through your Github account)
-4. [Jina.ai](https://jina.ai/embeddings/) to get an api key for Jina.ai services access
+4. [Jina.ai](https://jina.ai/embeddings/) (no need to sign up - api key for free)
 
-Follow the below steps and provide the **Astra DB API Endpoint**, **Astra DB ApplicationToken** and **OpenAI API Key** when required.
+Follow the below steps and provide the **Astra DB API Endpoint**, **Astra DB ApplicationToken**, **OpenAI API Key** and **Jina API Key** when required.
 
 ### Sign up for Astra DB
 Make sure you have a vector-capable Astra database (get one for free at [astra.datastax.com](https://astra.datastax.com))
