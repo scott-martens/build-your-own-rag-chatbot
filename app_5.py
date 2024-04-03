@@ -1,6 +1,7 @@
-from langchain_openai import OpenAIEmbeddings
+import streamlit as st
+from langchain_community.embeddings import JinaEmbeddings
 from langchain_openai import ChatOpenAI
-from langchain_community.vectorstores import AstraDB
+from langchain_astradb import AstraDBVectorStore
 from langchain.schema.runnable import RunnableMap
 from langchain.prompts import ChatPromptTemplate
 
@@ -35,8 +36,8 @@ chat_model = load_chat_model()
 @st.cache_resource(show_spinner='Connecting to Astra')
 def load_retriever():
     # Connect to the Vector Store
-    vector_store = AstraDB(
-        embedding=OpenAIEmbeddings(),
+    vector_store = AstraDBVectorStore(
+        embedding=JinaEmbeddings(),
         collection_name="my_store",
         api_endpoint=st.secrets['ASTRA_API_ENDPOINT'],
         token=st.secrets['ASTRA_TOKEN']

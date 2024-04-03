@@ -1,13 +1,13 @@
 import streamlit as st
-import tempfile, os
-from langchain_openai import OpenAIEmbeddings
+import tempfile
+import os
+from langchain_community.embeddings import JinaEmbeddings
 from langchain_openai import ChatOpenAI
-from langchain_community.vectorstores import AstraDB
+from langchain_astradb import AstraDBVectorStore
 from langchain.schema.runnable import RunnableMap
 from langchain.prompts import ChatPromptTemplate
 from langchain.callbacks.base import BaseCallbackHandler
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_community.document_loaders import PyPDFLoader
 
 # Streaming call back handler for responses
 class StreamHandler(BaseCallbackHandler):
@@ -75,8 +75,8 @@ def load_chat_model(openai_api_key):
 @st.cache_resource(show_spinner='Connecting to Astra DB Vector Store')
 def load_vector_store(_astra_db_endpoint, astra_db_secret, openai_api_key):
     # Connect to the Vector Store
-    vector_store = AstraDB(
-        embedding=OpenAIEmbeddings(openai_api_key=openai_api_key),
+    vector_store = AstraDBVectorStore(
+        embedding=JinaEmbeddings(),
         collection_name="my_store",
         api_endpoint=astra_db_endpoint,
         token=astra_db_secret
