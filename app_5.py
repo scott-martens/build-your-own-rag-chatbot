@@ -1,4 +1,4 @@
-from langchain_openai import OpenAIEmbeddings
+from langchain_community.embeddings import JinaEmbeddings
 from langchain_openai import ChatOpenAI
 from langchain_community.vectorstores import AstraDB
 from langchain.schema.runnable import RunnableMap
@@ -36,7 +36,7 @@ chat_model = load_chat_model()
 def load_retriever():
     # Connect to the Vector Store
     vector_store = AstraDB(
-        embedding=OpenAIEmbeddings(),
+        embedding=JinaEmbeddings(jina_api_key=st.secrets['JINA_API_KEY']),
         collection_name="my_store",
         api_endpoint=st.secrets['ASTRA_API_ENDPOINT'],
         token=st.secrets['ASTRA_TOKEN']
