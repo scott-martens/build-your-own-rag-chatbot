@@ -96,7 +96,7 @@ class JinaRerank(BaseDocumentCompressor):
 
         headers = {
             "Content-Type": "application/json",
-            "Authorization": f"Bearer {self.jina_api_key}"
+            "Authorization": f"Bearer {self.jina_api_key.get_secret_value()}"
         }
 
         data = {

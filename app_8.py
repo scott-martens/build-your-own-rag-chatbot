@@ -49,8 +49,11 @@ def vectorize_text(uploaded_file, vector_store):
 
         # Create the text splitter
         text_splitter = RecursiveCharacterTextSplitter(
+            # Larger chuck sizes work better, and Jina Embeddings supports
+            # much larger ones than this and GPT 3.5 Turbo supports large
+            # inputs too
             chunk_size = 15000,
-            chunk_overlap = 1000
+            chunk_overlap = 3000
         )
 
         # Vectorize the PDF and load it into the Astra DB Vector Store
@@ -61,8 +64,11 @@ def vectorize_text(uploaded_file, vector_store):
 # Cache prompt for future runs
 @st.cache_data()
 def load_prompt():
-    template = """You're a helpful AI assistent tasked to answer the user's questions.
-You're friendly and you answer extensively with multiple sentences. You prefer to use bulletpoints to summarize.
+    template = """You're a helpful AI assistant tasked to answer the user's questions.
+You're friendly and you answer extensively with multiple sentences. 
+You prefer to use bulletpoints to summarize.
+IMPORTANT: You must rely on the context information below, and as little as possible on
+other knowledge.
 
 CONTEXT:
 {context}
@@ -98,7 +104,7 @@ def load_vector_store():
     # Connect to the Vector Store
     vector_store = AstraDBVectorStore(
         embedding=JinaEmbeddings(model_name=jina_embeddings_model_name),
-        collection_name="devils_dictionary", #"my_store",
+        collection_name="my_store",
         api_endpoint=st.secrets['ASTRA_API_ENDPOINT'],
         token=st.secrets['ASTRA_TOKEN']
     )
@@ -110,14 +116,14 @@ vector_store = load_vector_store()
 def load_retriever():
     # Get the retriever for the Chat Model
     retriever = vector_store.as_retriever(
-        search_kwargs={"k": 50}
+        search_kwargs={"k": 20}
     )
     return retriever
 retriever = load_retriever()
 
 def get_and_rank_docs(question):
     context_records = retriever.get_relevant_documents(question)
-    reranked_items = reranker.rerank(query=question, documents=context_records, top_n=3)
+    reranked_items = reranker.rerank(query=question, documents=context_records, top_n=5)
     return [context_records[item['index']] for item in reranked_items]
 
 # Start with empty messages, stored in session state
@@ -166,7 +172,6 @@ if question := st.chat_input("What's up?"):
     })
     chain = inputs | prompt | chat_model
     response = chain.invoke({'question': question}, config={'callbacks': [StreamHandler(response_placeholder)]})
-    print("Prompt:\n\n" + question + "\n-----\n")
     answer = response.content
 
     # Store the bot's answer in a session object for redrawing next time
