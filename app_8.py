@@ -41,8 +41,8 @@ def vectorize_text(uploaded_file, vector_store):
 
         # Create the text splitter
         text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size=15000,
-            chunk_overlap=1000
+            chunk_size=1500,
+            chunk_overlap=100
         )
 
         # Vectorize the PDF and load it into the Astra DB Vector Store
@@ -64,9 +64,7 @@ QUESTION:
 {question}
 
 YOUR ANSWER:"""
-    return ChatPromptTemplate.from_messages([("human", template)])
-
-
+    return ChatPromptTemplate.from_messages([("system", template)])
 prompt = load_prompt()
 
 
@@ -162,18 +160,12 @@ if question := st.chat_input("What's up?"):
     # Generate the answer by calling OpenAI's Chat Model
 
     inputs = RunnableMap({
-        'context': lambda x: "\n\n".join([doc.page_content for doc in get_and_rank_docs(x['question'])]),
+        'context': lambda x: get_and_rank_docs(x['question']),
         'question': lambda x: x['question']
     })
     chain = inputs | prompt | chat_model
     response = chain.invoke({'question': question}, config={'callbacks': [StreamHandler(response_placeholder)]})
-    offset = response.content.find("[/INST]")
-    if offset:
-        prompt = response.content[0:offset + 7]
-        print("Prompt:\n\n" + prompt + "\n-----\n")
-        answer = response.content[offset + 7:]
-    else:
-        answer = "Error seeking end of prompt:\n\n" + response.content + "\n-----\n"
+    answer = response.content
 
     # Store the bot's answer in a session object for redrawing next time
     st.session_state.messages.append({"role": "ai", "content": answer})
