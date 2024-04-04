@@ -87,15 +87,18 @@ def load_chat_model():
 chat_model = load_chat_model()
 
 # Jina Reranker is currently only available in English
-reranker = JinaRerank("jina-reranker-v1-base-en")
+reranker = JinaRerank(
+    model="jina-reranker-v1-base-en",
+    jina_api_key=st.secrets["JINA_API_KEY"],
+)
 
 # Cache the Astra DB Vector Store for future runs
 @st.cache_resource(show_spinner='Connecting to Astra')
 def load_vector_store():
     # Connect to the Vector Store
     vector_store = AstraDBVectorStore(
-        embedding=JinaEmbeddings(jina_embeddings_model_name),
-        collection_name="my_store",
+        embedding=JinaEmbeddings(model_name=jina_embeddings_model_name),
+        collection_name="devils_dictionary", #"my_store",
         api_endpoint=st.secrets['ASTRA_API_ENDPOINT'],
         token=st.secrets['ASTRA_TOKEN']
     )
@@ -163,13 +166,8 @@ if question := st.chat_input("What's up?"):
     })
     chain = inputs | prompt | chat_model
     response = chain.invoke({'question': question}, config={'callbacks': [StreamHandler(response_placeholder)]})
-    offset = response.content.find("[/INST]")
-    if offset:
-        prompt = response.content[0:offset+7]
-        print("Prompt:\n\n" + prompt + "\n-----\n")
-        answer = response.content[offset+7:]
-    else:
-        answer = "Error seeking end of prompt:\n\n" + response.content + "\n-----\n"
+    print("Prompt:\n\n" + question + "\n-----\n")
+    answer = response.content
 
     # Store the bot's answer in a session object for redrawing next time
     st.session_state.messages.append({"role": "ai", "content": answer})

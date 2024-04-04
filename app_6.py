@@ -57,7 +57,7 @@ chat_model = load_chat_model()
 def load_retriever():
     # Connect to the Vector Store
     vector_store = AstraDBVectorStore(
-        embedding=JinaEmbeddings(jina_embeddings_model_name),
+        embedding=JinaEmbeddings(model_name=jina_embeddings_model_name),
         collection_name="my_store",
         api_endpoint=st.secrets['ASTRA_API_ENDPOINT'],
         token=st.secrets['ASTRA_TOKEN']

@@ -133,7 +133,7 @@ else:
     chat_model = load_chat_model(openai_api_key)
     vector_store = load_vector_store(astra_db_endpoint, astra_db_secret, jina_embeddings_api_key)
     retriever = load_retriever(vector_store)
-    reranker = JinaRerank("jina-reranker-v1-base-en")
+    reranker = JinaRerank(model="jina-reranker-v1-base-en")
 
     # Include the upload form for new data to be Vectorized
     with st.sidebar:
