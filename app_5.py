@@ -5,6 +5,15 @@ from langchain_astradb import AstraDBVectorStore
 from langchain.schema.runnable import RunnableMap
 from langchain.prompts import ChatPromptTemplate
 
+# Bilingual Models also available for:
+# German/English: "jina-embeddings-v2-base-de"
+# Chinese/English: "jina-embeddings-v2-base-zh"
+# Spanish/English: "jina-embeddings-v2-base-es"
+# And for programming languages plus English: "jina-embeddings-v2-base-code"
+# See https://jina.ai/embeddings/ for more.
+
+jina_embeddings_model_name = "jina-embeddings-v2-base-en"
+
 # Cache prompt for future runs
 @st.cache_data()
 def load_prompt():
@@ -37,7 +46,7 @@ chat_model = load_chat_model()
 def load_retriever():
     # Connect to the Vector Store
     vector_store = AstraDBVectorStore(
-        embedding=JinaEmbeddings(),
+        embedding=JinaEmbeddings(jina_embeddings_model_name),
         collection_name="my_store",
         api_endpoint=st.secrets['ASTRA_API_ENDPOINT'],
         token=st.secrets['ASTRA_TOKEN']

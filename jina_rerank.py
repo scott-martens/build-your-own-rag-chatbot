@@ -6,7 +6,7 @@ from typing import Any, Dict, List, Optional, Sequence, Union
 import requests
 
 from langchain_core.documents import Document
-from langchain_core.pydantic_v1 import Extra, root_validator
+from langchain_core.pydantic_v1 import Extra, SecretStr, root_validator
 
 from langchain.callbacks.manager import Callbacks
 from langchain.retrievers.document_compressors.base import BaseDocumentCompressor
@@ -22,7 +22,7 @@ class JinaRerank(BaseDocumentCompressor):
     """Number of documents to return."""
     model: str = "jina-reranker-v1-base-en"
     """Model to use for reranking."""
-    jina_api_key: Optional[str] = None
+    jina_api_key: Optional[SecretStr] = None
     """Jina API key. Must be specified directly or via environment variable 
         JINA_API_KEY."""
     user_agent: str = "langchain"
@@ -34,7 +34,7 @@ class JinaRerank(BaseDocumentCompressor):
         extra = Extra.forbid
         arbitrary_types_allowed = True
 
-    @root_validator()
+    @root_validator(allow_reuse=True)
     def validate_environment(cls, values: Dict) -> Dict:
         """Validate that api key exists in environment."""
         try:

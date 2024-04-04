@@ -8,6 +8,16 @@ from langchain.schema.runnable import RunnableMap
 from langchain.prompts import ChatPromptTemplate
 from langchain.callbacks.base import BaseCallbackHandler
 from langchain.text_splitter import RecursiveCharacterTextSplitter
+from jina_rerank import JinaRerank
+
+# Bilingual Models also available for:
+# German/English: "jina-embeddings-v2-base-de"
+# Chinese/English: "jina-embeddings-v2-base-zh"
+# Spanish/English: "jina-embeddings-v2-base-es"
+# And for programming languages plus English: "jina-embeddings-v2-base-code"
+# See https://jina.ai/embeddings/ for more.
+
+jina_embeddings_model_name = "jina-embeddings-v2-base-en"
 
 # Streaming call back handler for responses
 class StreamHandler(BaseCallbackHandler):
@@ -73,10 +83,13 @@ def load_chat_model(openai_api_key):
 
 # Cache the Astra DB Vector Store for future runs
 @st.cache_resource(show_spinner='Connecting to Astra DB Vector Store')
-def load_vector_store(_astra_db_endpoint, astra_db_secret, openai_api_key):
+def load_vector_store(_astra_db_endpoint, astra_db_secret, jina_embeddings_api_key):
     # Connect to the Vector Store
     vector_store = AstraDBVectorStore(
-        embedding=JinaEmbeddings(),
+        embedding=JinaEmbeddings(
+            model_name=jina_embeddings_model_name,
+            jina_api_key=jina_embeddings_api_key,
+        ),
         collection_name="my_store",
         api_endpoint=astra_db_endpoint,
         token=astra_db_secret
@@ -104,6 +117,7 @@ Why? Studies show a **37% efficiency boost** in day to day work activities!""")
 # Get the secrets
 astra_db_endpoint = st.sidebar.text_input('Astra DB Endpoint', type="password")
 astra_db_secret = st.sidebar.text_input('Astra DB Secret', type="password")
+jina_embeddings_api_key = st.sidebar.text_input('Jina AI API Key', type="password")
 openai_api_key = st.sidebar.text_input('OpenAI API Key', type="password")
 
 # Draw all messages, both user and bot so far (every time the app reruns)
@@ -117,8 +131,9 @@ if not openai_api_key.startswith('sk-') or not astra_db_endpoint.startswith('htt
 else:
     prompt = load_prompt()
     chat_model = load_chat_model(openai_api_key)
-    vector_store = load_vector_store(astra_db_endpoint, astra_db_secret, openai_api_key)
+    vector_store = load_vector_store(astra_db_endpoint, astra_db_secret, jina_embeddings_api_key)
     retriever = load_retriever(vector_store)
+    reranker = JinaRerank("jina-reranker-v1-base-en")
 
     # Include the upload form for new data to be Vectorized
     with st.sidebar:

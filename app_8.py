@@ -4,7 +4,6 @@ import tempfile
 
 from langchain_community.embeddings import JinaEmbeddings
 from langchain_openai import ChatOpenAI
-from langchain_community.chat_models.huggingface import ChatHuggingFace
 from langchain_astradb import AstraDBVectorStore
 from langchain.schema.runnable import RunnableMap
 from langchain.prompts import ChatPromptTemplate
@@ -12,6 +11,15 @@ from langchain.callbacks.base import BaseCallbackHandler
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import PyPDFLoader
 from jina_rerank import JinaRerank
+
+# Bilingual Models also available for:
+# German/English: "jina-embeddings-v2-base-de"
+# Chinese/English: "jina-embeddings-v2-base-zh"
+# Spanish/English: "jina-embeddings-v2-base-es"
+# And for programming languages plus English: "jina-embeddings-v2-base-code"
+# See https://jina.ai/embeddings/ for more.
+
+jina_embeddings_model_name = "jina-embeddings-v2-base-en"
 
 # Streaming call back handler for responses
 class StreamHandler(BaseCallbackHandler):
@@ -42,7 +50,7 @@ def vectorize_text(uploaded_file, vector_store):
         # Create the text splitter
         text_splitter = RecursiveCharacterTextSplitter(
             chunk_size = 15000,
-            chunk_overlap  = 1000
+            chunk_overlap = 1000
         )
 
         # Vectorize the PDF and load it into the Astra DB Vector Store
@@ -78,14 +86,15 @@ def load_chat_model():
 
 chat_model = load_chat_model()
 
-reranker = JinaRerank(jina_api_key=st.secrets['JINA_API_KEY'])
+# Jina Reranker is currently only available in English
+reranker = JinaRerank("jina-reranker-v1-base-en")
 
 # Cache the Astra DB Vector Store for future runs
 @st.cache_resource(show_spinner='Connecting to Astra')
 def load_vector_store():
     # Connect to the Vector Store
     vector_store = AstraDBVectorStore(
-        embedding=JinaEmbeddings(),
+        embedding=JinaEmbeddings(jina_embeddings_model_name),
         collection_name="my_store",
         api_endpoint=st.secrets['ASTRA_API_ENDPOINT'],
         token=st.secrets['ASTRA_TOKEN']
