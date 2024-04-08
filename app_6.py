@@ -1,11 +1,19 @@
 import streamlit as st
-import os
 from langchain_community.embeddings import JinaEmbeddings
 from langchain_openai import ChatOpenAI
 from langchain_community.vectorstores import AstraDB
 from langchain.schema.runnable import RunnableMap
 from langchain.prompts import ChatPromptTemplate
 from langchain.callbacks.base import BaseCallbackHandler
+
+# Bilingual Models also available for:
+# German/English: "jina-embeddings-v2-base-de"
+# Chinese/English: "jina-embeddings-v2-base-zh"
+# Spanish/English: "jina-embeddings-v2-base-es"
+# And for programming languages plus English: "jina-embeddings-v2-base-code"
+# See https://jina.ai/embeddings/ for more.
+
+jina_embeddings_model_name = "jina-embeddings-v2-base-en"
 
 # Streaming call back handler for responses
 class StreamHandler(BaseCallbackHandler):
@@ -49,7 +57,7 @@ chat_model = load_chat_model()
 def load_retriever():
     # Connect to the Vector Store
     vector_store = AstraDB(
-        embedding=JinaEmbeddings(jina_api_key=st.secrets['JINA_API_KEY']),
+        embedding=JinaEmbeddings(model_name=jina_embeddings_model_name, jina_api_key=st.secrets['JINA_API_KEY']),
         collection_name="my_store",
         api_endpoint=st.secrets['ASTRA_API_ENDPOINT'],
         token=st.secrets['ASTRA_TOKEN']

@@ -1,7 +1,5 @@
 import streamlit as st
-from langchain_community.embeddings import JinaEmbeddings
 from langchain_openai import ChatOpenAI
-from langchain_community.vectorstores import AstraDB
 from langchain.schema.runnable import RunnableMap
 from langchain.prompts import ChatPromptTemplate
 

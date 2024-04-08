@@ -12,6 +12,14 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import PyPDFLoader
 from jina_rerank import JinaRerank
 
+# Bilingual Models also available for:
+# German/English: "jina-embeddings-v2-base-de"
+# Chinese/English: "jina-embeddings-v2-base-zh"
+# Spanish/English: "jina-embeddings-v2-base-es"
+# And for programming languages plus English: "jina-embeddings-v2-base-code"
+# See https://jina.ai/embeddings/ for more.
+
+jina_embeddings_model_name = "jina-embeddings-v2-base-en"
 
 # Streaming call back handler for responses
 class StreamHandler(BaseCallbackHandler):
@@ -81,7 +89,7 @@ def load_chat_model():
 
 chat_model = load_chat_model()
 
-reranker = JinaRerank(jina_api_key=st.secrets['JINA_API_KEY'])
+reranker = JinaRerank(model="jina-reranker-v1-base-en", jina_api_key=st.secrets['JINA_API_KEY'])
 
 
 # Cache the Astra DB Vector Store for future runs
@@ -105,7 +113,7 @@ vector_store = load_vector_store()
 def load_retriever():
     # Get the retriever for the Chat Model
     retriever = vector_store.as_retriever(
-        search_kwargs={"k": 50}
+        search_kwargs={"k": 20}
     )
     return retriever
 
@@ -115,7 +123,7 @@ retriever = load_retriever()
 
 def get_and_rank_docs(question):
     context_records = retriever.get_relevant_documents(question)
-    reranked_items = reranker.rerank(query=question, documents=context_records, top_n=3)
+    reranked_items = reranker.rerank(query=question, documents=context_records, top_n=5)
     return [context_records[item['index']] for item in reranked_items]
 
 
