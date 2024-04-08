@@ -72,7 +72,7 @@ You'll learn:
 ## 3️⃣ Open this tutorial on Github Codespaces
 To make life easier, we'll use the awesome Github Codespace functionality. Github offers you a completely integrated developer experience and resources to get started quickly. How?
 
-1. Open the [build-your-own-rag-agent](https://github.com/michelderu/build-your-own-rag-agent) repository
+1. Open the [build-your-own-rag-agent](https://github.com/difli/build-your-own-rag-chatbot/tree/jina.ai) repository
 2. Click on `Use this template`->`Ceate new repository` as follows:
 
     ![codespace](./assets/create-new-repository.png)
@@ -81,7 +81,11 @@ To make life easier, we'll use the awesome Github Codespace functionality. Githu
 
     ![codespace](./assets/repository-name.png)
 
-4. Cool! You just created a copy in your own Gihub account! Now let's get started with coding. Click `Create codespace on main` as follows:
+4. Cool! You just created a copy in your own Gihub account! **Important: Switch the branch to 'jina.ai'**
+
+    ![codespace](./assets/switch-branch.png)
+
+5. Now let's get started with coding. Click `Create codespace on jina.ai` as follows:
 
     ![codespace](./assets/create-codespace.png)
 
