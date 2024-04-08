@@ -4,7 +4,7 @@ import tempfile
 
 from langchain_community.embeddings import JinaEmbeddings
 from langchain_openai import ChatOpenAI
-from langchain_community.vectorstores import AstraDB
+from langchain_astradb import AstraDBVectorStore
 from langchain.schema.runnable import RunnableMap
 from langchain.prompts import ChatPromptTemplate
 from langchain.callbacks.base import BaseCallbackHandler
@@ -96,7 +96,7 @@ reranker = JinaRerank(model="jina-reranker-v1-base-en", jina_api_key=st.secrets[
 @st.cache_resource(show_spinner='Connecting to Astra')
 def load_vector_store():
     # Connect to the Vector Store
-    vector_store = AstraDB(
+    vector_store = AstraDBVectorStore(
         embedding=JinaEmbeddings(jina_api_key=st.secrets['JINA_API_KEY']),
         collection_name="my_store",
         api_endpoint=st.secrets['ASTRA_API_ENDPOINT'],

@@ -95,9 +95,7 @@ When the codespace start up, it will run a Streamlit Hello World app for you whi
 
 ## 4️⃣ Getting started with Streamlit to build an app
 
-Let us now build a real application we will use the following architecture
-
-![steps](./assets/steps.png)
+Let us now build a real application.
 
 In this workshop we'll use Streamlit which is an amazingly simple to use framework to create front-end web applications.
 
@@ -129,11 +127,10 @@ Simple, isn't it? 🤩
 
 ## 5️⃣ Add a Chatbot interface to the app
 
-In this step we'll start preparing the app to allow for chatbot interaction with a user. We'll use the following Streamlit components:
-1. 
-2. `st.chat_input` in order for a user to allow to enter a question
-2. `st.chat_message('human')` to draw the user's input
-3. `st.chat_message('assistant')` to draw the chatbot's response
+In this step we'll start preparing the app to allow for chatbot interaction with a user. We'll use the following Streamlit components: 
+- `st.chat_input` in order for a user to allow to enter a question
+- `st.chat_message('human')` to draw the user's input
+- `st.chat_message('assistant')` to draw the chatbot's response
 
 This results in the following code:
 
@@ -244,7 +241,7 @@ OPENAI_API_KEY = "<YOUR-API-KEY>"
 
 To get this application started locally you'll need to install several dependencies as follows (not needed in Codespaces):
 ```bash
-pip install openai tiktoken astrapy langchain langchain_openai langchain-community
+pip install ragstack-ai
 ```
 
 Now run the app:
@@ -319,11 +316,9 @@ And run the app:
 streamlit run app_5.py
 ```
 
-Let's again ask the question:
-
-    What does Daniel Radcliffe get when he turns 18?
-
-As you will see, now you'll receive a very contextual answer as the Vector Store provides relevant CNN data to the Chat Model.
+The answer we get is not different than the one we got before.
+We do not have any vectorized context in Astra DB yet.
+Stay tuned.
 
 ## 9️⃣ Finally, let's make this a streaming app
 
