@@ -47,7 +47,7 @@ Follow the steps outlined [here](https://docs.streamlit.io/streamlit-community-c
 
 ![codespace](./assets/streamlit.png)
 
-### Get an Jina.ai api key for free
+### Get a Jina.ai api key for free
 Just navigate to this page [here](https://jina.ai/embeddings/) scroll down and copy your api key .
 
 ![codespace](./assets/jina.png)
