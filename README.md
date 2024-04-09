@@ -9,6 +9,7 @@ What you'll learn:
 - 🤩 How to leverage [DataStax RAGStack](https://docs.datastax.com/en/ragstack/docs/index.html) for production-ready use of the following components:
     - 🚀 The [Astra DB Vector Store](https://db.new) for Semantic Similarity search
     - 🦜🔗 [LangChain](https://www.langchain.com) for linking OpenAI and Astra DB
+- 🤩 How to use [Jina Embeddings](https://jina.ai/embeddings) and [Reranker](https://jina.ai/reranker) to improve the performance
 - 🤖 How to use [OpenAI's Large Language Models](https://platform.openai.com/docs/models) for Q&A style chatbots
 - 👑 How to use [Streamlit](https://streamlit.io) to easily deploy your awesome app to the internet for everyone to see!
 
@@ -25,7 +26,7 @@ During the course, you'll gain access to the following by signing up for free:
 1. [DataStax Astra DB](https://astra.datastax.com) (you can sign up through your Github account)
 2. [OpenAI account](https://platform.openai.com/signup) (you can sign up through your Github account)
 3. [Streamlit](https://streamlit.io) to deploy your amazing app (you can sign up through your Github account)
-4. [Jina.ai](https://jina.ai/embeddings/) (no need to sign up - api key for free)
+4. [Jina Embeddings](https://jina.ai/embeddings) and [Reranker](https://jina.ai/reranker) (no need to sign up - API key for free)
 
 Follow the below steps and provide the **Astra DB API Endpoint**, **Astra DB ApplicationToken**, **OpenAI API Key** and **Jina API Key** when required.
 
@@ -47,8 +48,8 @@ Follow the steps outlined [here](https://docs.streamlit.io/streamlit-community-c
 
 ![codespace](./assets/streamlit.png)
 
-### Get a Jina.ai api key for free
-Just navigate to this page [here](https://jina.ai/embeddings/) scroll down and copy your api key .
+### Get a Jina AI api key for free
+Just navigate to this page [here](https://jina.ai/embeddings/) scroll down and copy your api key. Same key for embedding api and for reranker api.
 
 ![codespace](./assets/jina.png)
 
